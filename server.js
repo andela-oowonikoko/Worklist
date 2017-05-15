@@ -1,8 +1,22 @@
 import path from 'path';
+import express from 'express';
+import parser from 'body-parser';
+import firebase from 'firebase';
 
-const express = require('express');
-const parser = require('body-parser');
 const route = require('./server/routes');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const config = {
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  databaseURL: process.env.DATABASEURL,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID
+};
+firebase.initializeApp(config);
 
 const port = process.env.PORT || 4000;
 
