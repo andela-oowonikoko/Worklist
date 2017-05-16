@@ -1,6 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const DotEnvPlugin = require('dotenv-webpack');
+
+const dotenvPlugin = new DotEnvPlugin({
+  path: '.env',
+});
 
 module.exports = {
   entry: [
@@ -48,9 +53,11 @@ module.exports = {
   },
   node: {
     net: 'empty',
-    dns: 'empty'
+    dns: 'empty',
+    fs: 'empty'
   },
   plugins: [
+    dotenvPlugin,
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),

@@ -1,6 +1,6 @@
 import express from 'express';
 import firebase from 'firebase';
-
+//  2Dbrg4rUq1Zm8VjwAzm2QDaUOuI2
 const todoRouter = express.Router();
 
 todoRouter.route('/')
@@ -8,23 +8,127 @@ todoRouter.route('/')
     res.status(200).send("{ message: 'Welcome to Worklist API' }");
   });
 
-todoRouter.get('/login', (req, res) => {
-  const provider = new firebase.auth.GoogleAuthProvider();
+todoRouter.post('/user', (req, res) => {
+  if (req.body.password && req.body.email) {
+    const email = req.body.email;
+    const password = req.body.password;
 
-  firebase.auth()
-  .signInWithPopup(provider).then((result) => {
-    const token = result.credential.accessToken;
-    const user = result.user;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((data) => {
+      const worklistRef = firebase.database().ref(`${data.uid}/`);
+      worklistRef.set({
+        todoList: {
+          title: '',
+          task: {
+            normal: '',
+            urgent: '',
+            critical: ''
+          }
+        },
+      });
 
-    console.log('token', token);
-    console.log('user', user);
-  }).catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+      res.status(201)
+        .send({
+          message: 'Your account has been successfully created',
+          uid: data.uid
+        });
+    })
+    .catch((error) => {
+      return res.status(409)
+        .send({
+          message: error.message,
+        });
+    });
+  } else {
+    if (!req.body.email) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid email'
+        });
+    }
+    if (!req.body.password) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid password'
+        });
+    }
+  }
+});
 
-    console.log('error code', errorCode);
-    console.log('error message', errorMessage);
-  });
+todoRouter.post('/createtask', (req, res) => {
+  const userId = req.body.userId;
+  const title = req.body.title;
+  const task = req.body.task;
+  const priority = req.body.priority || 'normal';
+
+  if (userId && title && task && priority) {
+    const worklistRef = firebase.database().ref(`${userId}/${title}/${priority}`);
+
+    if (priority.toLowerCase() === 'normal' ||
+      priority.toLowerCase() === 'urgent' ||
+      priority.toLowerCase() === 'critical') {
+      worklistRef.push({
+        task
+      });
+
+      return res.status(201)
+        .send({
+          message: 'Your task has been added',
+        });
+    }
+
+    return res.status(400)
+        .send({
+          message: 'Priority can either be normal, urgent or critical'
+        });
+  } else {
+    if (!title) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid title'
+        });
+    }
+    if (!task) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid task'
+        });
+    }
+    if (!priority) {
+      return res.status(400)
+        .send({
+          message: 'Priority cannot be empty'
+        });
+    }
+    if (!userId) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid userId'
+        });
+    }
+  }
+
+  const worklistRef = firebase.database().ref(`${userId}/${title}/${priority}`);
+
+  if (priority.toLowerCase() === 'normal') {
+    worklistRef.push({
+      task
+    });
+
+    res.status(201)
+      .send({
+        message: 'Your task has been added',
+      });
+  } else if (priority.toLowerCase() === 'urgent') {
+
+  } else if (priority.toLowerCase() === 'critical') {
+
+  } else {
+    return res.status(400)
+        .send({
+          message: 'Priority can either be normal, urgent or critical'
+        });
+  }
 });
 
 todoRouter.get('/signout', (req, res) => {
