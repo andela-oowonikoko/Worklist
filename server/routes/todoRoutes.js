@@ -107,28 +107,6 @@ todoRouter.post('/createtask', (req, res) => {
         });
     }
   }
-
-  const worklistRef = firebase.database().ref(`${userId}/${title}/${priority}`);
-
-  if (priority.toLowerCase() === 'normal') {
-    worklistRef.push({
-      task
-    });
-
-    res.status(201)
-      .send({
-        message: 'Your task has been added',
-      });
-  } else if (priority.toLowerCase() === 'urgent') {
-
-  } else if (priority.toLowerCase() === 'critical') {
-
-  } else {
-    return res.status(400)
-        .send({
-          message: 'Priority can either be normal, urgent or critical'
-        });
-  }
 });
 
 todoRouter.get('/signout', (req, res) => {
