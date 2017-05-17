@@ -19,7 +19,7 @@ class NavBar extends Component {
           <div className="brand-logo">Worklist</div>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
-              {(localStorage.getItem('worklist'))
+              {(userDetails.photo)
                 ? <img
                   className="profilePic"
                   src={userDetails.photo}

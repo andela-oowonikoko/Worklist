@@ -1,6 +1,6 @@
 import express from 'express';
 import firebase from 'firebase';
-//  2Dbrg4rUq1Zm8VjwAzm2QDaUOuI2
+
 const todoRouter = express.Router();
 
 todoRouter.route('/')
@@ -8,25 +8,23 @@ todoRouter.route('/')
     res.status(200).send("{ message: 'Welcome to Worklist API' }");
   });
 
-todoRouter.post('/user', (req, res) => {
+todoRouter.get('/users/', (req, res) => {
+  const userId = req.query.q;
+  const dataToReturn = [];
+  const worklistRef = firebase.database().ref(`${userId}/`);
+
+  worklistRef.orderByKey().on('child_added', (data) => {
+    dataToReturn.push(data.key);
+  });
+});
+
+todoRouter.post('/users', (req, res) => {
   if (req.body.password && req.body.email) {
     const email = req.body.email;
     const password = req.body.password;
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((data) => {
-      const worklistRef = firebase.database().ref(`${data.uid}/`);
-      worklistRef.set({
-        todoList: {
-          title: '',
-          task: {
-            normal: '',
-            urgent: '',
-            critical: ''
-          }
-        },
-      });
-
       res.status(201)
         .send({
           message: 'Your account has been successfully created',
@@ -62,13 +60,15 @@ todoRouter.post('/createtask', (req, res) => {
   const priority = req.body.priority || 'normal';
 
   if (userId && title && task && priority) {
-    const worklistRef = firebase.database().ref(`${userId}/${title}/${priority}`);
+    const worklistRef = firebase.database().ref(`${userId}/${title}`);
 
     if (priority.toLowerCase() === 'normal' ||
       priority.toLowerCase() === 'urgent' ||
       priority.toLowerCase() === 'critical') {
       worklistRef.push({
-        task
+        content: task,
+        priority,
+        complete: false
       });
 
       return res.status(201)
@@ -78,9 +78,9 @@ todoRouter.post('/createtask', (req, res) => {
     }
 
     return res.status(400)
-        .send({
-          message: 'Priority can either be normal, urgent or critical'
-        });
+      .send({
+        message: 'Priority can either be normal, urgent or critical'
+      });
   } else {
     if (!title) {
       return res.status(400)
