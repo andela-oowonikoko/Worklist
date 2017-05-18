@@ -37,6 +37,42 @@ todoRouter.post('/users', (req, res) => {
     .catch((error) => {
       return res.status(409)
         .send({
+          message: error.code,
+          errorMessage: error.message
+        });
+    });
+  } else {
+    if (!req.body.email) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid email'
+        });
+    }
+    if (!req.body.password) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid password'
+        });
+    }
+  }
+});
+
+todoRouter.post('/login', (req, res) => {
+  if (req.body.password && req.body.email) {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((data) => {
+      res.status(200)
+        .send({
+          message: 'You have succesfully signed in',
+          data: data.uid
+        });
+    })
+    .catch((error) => {
+      return res.status(400)
+        .send({
           message: error.message,
         });
     });
@@ -121,18 +157,18 @@ todoRouter.post('/createtask', (req, res) => {
   }
 });
 
-todoRouter.get('/signout', (req, res) => {
+todoRouter.get('/logout', (req, res) => {
   firebase.auth().signOut()
 
    .then(() => {
      return res.status(200)
         .send({
-          message: 'Signout Succesful'
+          message: 'Logout Succesful'
         });
    }, (error) => {
      return res.status(400)
         .send({
-          message: 'Signout Failed'
+          message: 'Logout Failed'
         });
    });
 });

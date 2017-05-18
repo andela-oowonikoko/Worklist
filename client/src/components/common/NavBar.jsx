@@ -37,7 +37,7 @@ class NavBar extends Component {
               }
             </li>
             <li className="logout">
-              {(localStorage.getItem('worklist'))
+              {(localStorage.getItem('userId'))
                 ? <a href="#" onClick={this.onClickLogout}>Logout</a>
                 : ''
               }

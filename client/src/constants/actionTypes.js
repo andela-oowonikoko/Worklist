@@ -1,4 +1,5 @@
 module.exports = {
   FETCH_LISTS: 'FETCH_LISTS',
-  ADD_LIST: 'ADD_LIST'
+  ADD_LIST: 'ADD_LIST',
+  SET_USERID: 'SET_USERID'
 };

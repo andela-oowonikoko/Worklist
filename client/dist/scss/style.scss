@@ -1,5 +1,22 @@
 .login-page {
-  margin-top: 200px;
+  margin-top: 100px;
+  box-shadow: 5px 5px 10px grey;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.signupDiv {
+  display: inline-block;
+  padding: 32px 48px 0px 48px;
+  border: 1px solid #EEE;
+}
+
+#signupForm {
+  margin-right: 20px;
+}
+
+.forgotPasswordDiv {
+  float: right;
 }
 
 .brand-logo {
