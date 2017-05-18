@@ -77,7 +77,7 @@ class MyList extends Component {
       complete: this.state.complete,
       date: this.state.date,
       priority: this.state.priority,
-      userId: JSON.parse(localStorage.getItem('worklist')).uid
+      userId: localStorage.getItem('userId')
     };
     AddListActions.addlist(bodyData);
     $('#appendTask').append(

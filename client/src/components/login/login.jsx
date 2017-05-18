@@ -32,6 +32,7 @@ export default class Login extends React.Component {
             },
           );
           localStorage.setItem('worklist', userDetails);
+          localStorage.setItem('userId', JSON.parse(userDetails).uid);
           return true;
         },
       },
