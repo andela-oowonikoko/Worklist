@@ -13,8 +13,17 @@ todoRouter.get('/users/', (req, res) => {
   const dataToReturn = [];
   const worklistRef = firebase.database().ref(`${userId}/`);
 
-  worklistRef.orderByKey().on('child_added', (data) => {
-    dataToReturn.push(data.key);
+  // worklistRef.orderByKey().on('child_added', (data) => {
+  //   dataToReturn.push(data.key);
+  //   console.log(dataToReturn);
+  // });
+
+  worklistRef.once('value').then(function(snapshot) {
+    res.status(200)
+        .send({
+          message: 'Your ToDo Lists',
+          data: snapshot.val()
+        });
   });
 });
 
@@ -54,12 +63,15 @@ todoRouter.post('/users', (req, res) => {
 });
 
 todoRouter.post('/createtask', (req, res) => {
+  console.log(req.body);
   const userId = req.body.userId;
   const title = req.body.title;
   const task = req.body.task;
+  const dueDate = req.body.date;
+  const complete = req.body.complete || false;
   const priority = req.body.priority || 'normal';
 
-  if (userId && title && task && priority) {
+  if (userId && title && task && dueDate && priority) {
     const worklistRef = firebase.database().ref(`${userId}/${title}`);
 
     if (priority.toLowerCase() === 'normal' ||
@@ -68,7 +80,8 @@ todoRouter.post('/createtask', (req, res) => {
       worklistRef.push({
         content: task,
         priority,
-        complete: false
+        complete,
+        date: dueDate
       });
 
       return res.status(201)
@@ -92,6 +105,12 @@ todoRouter.post('/createtask', (req, res) => {
       return res.status(400)
         .send({
           message: 'Enter a valid task'
+        });
+    }
+    if (!dueDate) {
+      return res.status(400)
+        .send({
+          message: 'Enter a due date'
         });
     }
     if (!priority) {
