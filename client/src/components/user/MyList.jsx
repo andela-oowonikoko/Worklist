@@ -3,7 +3,6 @@ import { Modal, Button, Row, Input } from 'react-materialize';
 import NavBar from '../common/NavBar';
 import FetchlistStore from '../../stores/fetchlistStore';
 import AddListActions from '../../actions/addListActions';
-import AddListStore from '../../stores/addlistStore';
 
 
 /**

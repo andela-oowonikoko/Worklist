@@ -13,11 +13,6 @@ todoRouter.get('/users/', (req, res) => {
   const dataToReturn = [];
   const worklistRef = firebase.database().ref(`${userId}/`);
 
-  // worklistRef.orderByKey().on('child_added', (data) => {
-  //   dataToReturn.push(data.key);
-  //   console.log(dataToReturn);
-  // });
-
   worklistRef.once('value').then(function(snapshot) {
     res.status(200)
         .send({
