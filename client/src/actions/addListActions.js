@@ -3,7 +3,6 @@ import ActionTypes from '../constants/actionTypes';
 
 const AddListActions = {
   addlist(bodyData) {
-    console.log(bodyData);
     fetch('/createtask', {
       headers: {
         Accept: 'application/json',

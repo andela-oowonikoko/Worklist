@@ -63,7 +63,6 @@ todoRouter.post('/users', (req, res) => {
 });
 
 todoRouter.post('/createtask', (req, res) => {
-  console.log(req.body);
   const userId = req.body.userId;
   const title = req.body.title;
   const task = req.body.task;

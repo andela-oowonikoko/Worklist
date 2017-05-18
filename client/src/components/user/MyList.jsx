@@ -81,6 +81,21 @@ class MyList extends Component {
       userId: JSON.parse(localStorage.getItem('worklist')).uid
     };
     AddListActions.addlist(bodyData);
+    $('#appendTask').append(
+      `<p>Task: ${this.state.task}<p>`
+    );
+    this.setState({
+      task: ''
+    });
+    Materialize.toast('Your task has been added', 4000, 'rounded');
+  }
+
+  /**
+   * @returns {void}
+   * @memberof MyList
+   */
+  onClickDone() {
+    window.location = '/app/mylist';
   }
 
   /**
@@ -116,15 +131,18 @@ class MyList extends Component {
               className="todoInput"
               id="title"
               onChange={event => this.onChangeEvent(event)}
+              value={this.state.title}
               required
             />
             <br />
+            <div id="appendTask" />
             <label htmlFor="task">Task</label>
             <input
               type="text"
               name="task"
               className="todoInput"
               id="task"
+              value={this.state.task}
               onChange={event => this.onChangeEvent(event)}
               required
             />
@@ -137,6 +155,7 @@ class MyList extends Component {
                 className="todoInput"
                 id="date"
                 onChange={event => this.onChangeEvent(event)}
+                value={this.state.date}
                 required
               />
               <Input
@@ -147,6 +166,7 @@ class MyList extends Component {
                 className="todoInput"
                 id="priority"
                 onChange={event => this.onChangeEvent(event)}
+                value={this.state.priority}
               >
                 <option value="normal">Normal</option>
                 <option value="urgent">Urgent</option>
@@ -161,17 +181,30 @@ class MyList extends Component {
               Add Task
               <i className="material-icons right">send</i>
             </button>
+            <button
+              className="btn waves-effect waves-light right"
+              type="submit"
+              name="action"
+              onClick={this.onClickDone}
+            >
+              Done
+            </button>
           </form>
         </Modal>
         <div className="myLists">
           {Object.keys(listsToDisplay).map((key, index) => {
+            const firstindex = index;
             return (
               <div className="todoTitle" key={index}>
-                <p className="todoTitlePara">{key}</p>
+                <p className="todoTitlePara" id={index}>{key}</p>
                 {Object.keys(listsToDisplay[key]).map((task, secondIndex) => {
                   const taskToDisplay = listsToDisplay[key][task];
                   return (
-                    <div key={secondIndex} className="todoContents">
+                    <div
+                      key={secondIndex}
+                      className="todoContents"
+                      id={secondIndex}
+                    >
                       {taskToDisplay.content}
                       {taskToDisplay.priority === 'normal' &&
                         <div className="right blue normalDiv taskRight" />}

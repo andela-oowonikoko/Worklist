@@ -22,6 +22,10 @@ module.exports = {
         }
       },
       {
+        test: /materialize-css\/bin\//,
+        loader: 'imports?jQuery=jquery,$=jquery,hammerjs'
+      },
+      {
         test: /\.css$/,
         loader: 'style-loader!css-loader?root=.'
       },
@@ -66,7 +70,9 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery'
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Hammer: 'hammerjs/hammer'
     })
   ]
 };
