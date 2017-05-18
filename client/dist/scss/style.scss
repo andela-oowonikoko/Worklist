@@ -1,0 +1,82 @@
+.login-page {
+  margin-top: 200px;
+}
+
+.brand-logo {
+  margin-left: 50px;
+}
+
+.profilePic {
+  height: 50px;
+  width: 50px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
+.addList {
+  margin-top: 50px;
+}
+
+.todoTitle {
+  color: #000;
+}
+
+.myLists {
+  display: flex;
+  flex-direction: column;
+  padding: 0 300px;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.todoTitlePara {
+  margin-top: 0;
+  padding-top: 5px;
+  border-bottom: solid 1px grey;
+  width: 100%;
+  background-color: antiquewhite;
+  padding: 5px; 
+}
+
+.todoTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  border: 1px;
+  border: solid grey 1px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  box-shadow: 5px 5px 10px grey;
+}
+
+.todoContents {
+  padding:0 20px 20px 20px;
+}
+
+.normalDiv {
+  height: 10px;
+  width: 10px;
+}
+
+.addList {
+  bottom: 40px;
+  right: 40px;
+  position: fixed;
+}
+
+.addList:hover {
+  box-shadow: 5px 5px 10px grey;
+}
+
+.taskRight {
+  margin-right: 8px;
+  font-size: 0.7em;
+}
+
+.btnAddTask {
+  width: 200px;
+}
