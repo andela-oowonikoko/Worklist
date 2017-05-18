@@ -10,10 +10,9 @@ todoRouter.route('/')
 
 todoRouter.get('/users/', (req, res) => {
   const userId = req.query.q;
-  const dataToReturn = [];
   const worklistRef = firebase.database().ref(`${userId}/`);
 
-  worklistRef.once('value').then(function(snapshot) {
+  worklistRef.once('value').then((snapshot) => {
     res.status(200)
         .send({
           message: 'Your ToDo Lists',
@@ -126,9 +125,15 @@ todoRouter.get('/signout', (req, res) => {
   firebase.auth().signOut()
 
    .then(() => {
-     console.log('Signout Succesfull');
+     return res.status(200)
+        .send({
+          message: 'Signout Succesful'
+        });
    }, (error) => {
-     console.log('Signout Failed');
+     return res.status(400)
+        .send({
+          message: 'Signout Failed'
+        });
    });
 });
 

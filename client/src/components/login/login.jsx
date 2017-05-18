@@ -12,6 +12,7 @@ export default class Login extends React.Component {
   /**
    * Sets the Firebase Login User Configuration
    * @memberOf Login
+   * @returns {void}
    */
   componentDidMount() {
     const googleLoginConfiguration = {
@@ -43,7 +44,7 @@ export default class Login extends React.Component {
 
   /**
    * Renders the full login page
-   * @returns The Google login button
+   * @returns {button} The Google login button
    * @memberOf Login
    */
   render() {

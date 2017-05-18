@@ -192,7 +192,6 @@ class MyList extends Component {
         </Modal>
         <div className="myLists">
           {Object.keys(listsToDisplay).map((key, index) => {
-            const firstindex = index;
             return (
               <div className="todoTitle" key={index}>
                 <p className="todoTitlePara" id={index}>{key}</p>
