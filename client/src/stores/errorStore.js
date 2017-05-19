@@ -3,10 +3,9 @@ const ActionTypes = require('../constants/actionTypes');
 const EventEmitter = require('events').EventEmitter;
 
 const CHANGE_EVENT = 'change';
-let _userId = '';
-let _resetPasswordMessage = '';
+let _errorMessage = {};
 
-const AuthenticationStore = Object.assign({}, EventEmitter.prototype, {
+const ErrorStore = Object.assign({}, EventEmitter.prototype, {
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -16,26 +15,19 @@ const AuthenticationStore = Object.assign({}, EventEmitter.prototype, {
   emitChange() {
     this.emit(CHANGE_EVENT);
   },
-  getUserId() {
-    return _userId;
-  },
-  getResetMessage() {
-    return _resetPasswordMessage;
+  getMessage() {
+    return _errorMessage;
   }
 });
 
 Dispatcher.register((action) => {
   switch (action.actionType) {
-    case ActionTypes.SET_USERID:
-      _userId = action.data;
-      AuthenticationStore.emitChange();
-      break;
-    case ActionTypes.GET_EMAIL:
-      _resetPasswordMessage = action.data;
-      AuthenticationStore.emitChange();
+    case ActionTypes.SET_ERROR_MESSAGE:
+      _errorMessage = action.data;
+      ErrorStore.emitChange();
       break;
     default:
   }
 });
 
-module.exports = AuthenticationStore;
+module.exports = ErrorStore;

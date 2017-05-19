@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from '../../firebaseConfig';
 import NavBar from '../common/NavBar';
 import AuthenticationActions from '../../actions/authenticationActions';
+import AuthenticationStore from '../../stores/authenticationStore';
 
 /**
  * Displays the Login Page
@@ -17,10 +18,15 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: '',
+      resetPWD: false,
       email: '',
       password: ''
     };
+    this.onChange = this.onChange.bind(this);
     this.signup = this.signup.bind(this);
+    this.login = this.login.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   /**
@@ -29,6 +35,8 @@ export default class Login extends React.Component {
    * @returns {void}
    */
   componentDidMount() {
+    AuthenticationStore.addChangeListener(this.onChange);
+
     $('#signupDiv').hide();
 
     const googleLoginConfiguration = {
@@ -60,6 +68,29 @@ export default class Login extends React.Component {
   }
 
   /**
+   * Removes the listener on the FetchlistStore
+   * @memberof Login
+   * @returns {void}
+   */
+  componentWillUnmount() {
+    AuthenticationStore.removeChangeListener(this.onChange);
+  }
+
+  /**
+   * @memberof Login
+   * @returns {void}
+   */
+  onChange() {
+    this.setState({ userId: AuthenticationStore.getUserId() });
+    this.setState({ resetPWD: AuthenticationStore.getResetMessage() });
+
+    if (this.state.userId) {
+      localStorage.setItem('userId', this.state.userId);
+      window.location = '/app/mylist';
+    }
+  }
+
+  /**
    * @param {any} event
    * @returns {object} object
    * @memberOf Login
@@ -77,8 +108,30 @@ export default class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    const error = AuthenticationActions.signup(bodyData);
-    // window.location = '/app/mylist';
+    AuthenticationActions.signup(bodyData);
+  }
+
+  /**
+   * @returns {void}
+   * @memberof Login
+   */
+  login() {
+    const bodyData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    AuthenticationActions.login(bodyData);
+  }
+
+  /**
+   * @returns {void}
+   * @memberof Login
+   */
+  resetPassword() {
+    const bodyData = {
+      email: this.state.email,
+    };
+    AuthenticationActions.resetPassword(bodyData);
   }
 
   /**
@@ -110,57 +163,60 @@ export default class Login extends React.Component {
         <NavBar />
         <div className="container-fluid login-page">
           <div className="container" id="loginDiv">
-            <form className="col s12">
-              <div className="row">
-                <div className="col s12" />
-              </div>
+            <div className="row">
+              <div className="col s12" />
+            </div>
 
-              <div className="row">
-                <div className="input-field col s12">
-                  <input
-                    className="validate"
-                    type="email"
-                    name="email"
-                    id="email"
-                    onChange={event => this.onChangeEvent(event)}
-                    required
-                  />
-                  <label htmlFor="email">Enter your email</label>
-                </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  className="validate"
+                  type="email"
+                  name="email"
+                  id="email"
+                  onChange={event => this.onChangeEvent(event)}
+                  required
+                />
+                <label htmlFor="email">Enter your email</label>
               </div>
+            </div>
 
-              <div className="row">
-                <div className="input-field col s12">
-                  <input
-                    className="validate"
-                    type="password"
-                    name="password"
-                    id="password"
-                    onChange={event => this.onChangeEvent(event)}
-                    required
-                  />
-                  <label htmlFor="password">Enter your password</label>
-                </div>
-                <label id="forgotPasswordDiv" htmlFor="forgotPassword">
-                  <a className="pink-text right" href="#!">
-                    <b>Forgot Password?</b>
-                  </a>
-                </label>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  className="validate"
+                  type="password"
+                  name="password"
+                  id="password"
+                  onChange={event => this.onChangeEvent(event)}
+                  required
+                />
+                <label htmlFor="password">Enter your password</label>
               </div>
+              <label id="forgotPasswordDiv" htmlFor="forgotPassword">
+                <a
+                  className="pink-text right"
+                  href="#!"
+                  onClick={this.resetPassword}
+                >
+                  <b>Forgot Password?</b>
+                </a>
+              </label>
+            </div>
 
-              <br />
-              <center>
-                <div className="row">
-                  <button
-                    type="submit"
-                    name="btn_login"
-                    className="col s12 btn btn-large waves-effect red lighten-2"
-                  >
-                    Login
-                  </button>
-                </div>
-              </center>
-            </form>
+            <br />
+            <center>
+              <div className="row">
+                <button
+                  type="submit"
+                  name="btn_login"
+                  className="col s12 btn btn-large waves-effect red lighten-2"
+                  onClick={this.login}
+                >
+                  Login
+                </button>
+              </div>
+            </center>
             <a
               href="#!"
               className="right"
@@ -172,53 +228,51 @@ export default class Login extends React.Component {
           </div>
 
           <div className="container" id="signupDiv">
-            {/*<form className="col s12">*/}
-              <div className="row">
-                <div className="col s12" />
-              </div>
+            <div className="row">
+              <div className="col s12" />
+            </div>
 
-              <div className="row">
-                <div className="input-field col s12">
-                  <input
-                    className="validate"
-                    type="email"
-                    name="email"
-                    id="email"
-                    onChange={event => this.onChangeEvent(event)}
-                    required
-                  />
-                  <label htmlFor="email">Enter your email</label>
-                </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  className="validate"
+                  type="email"
+                  name="email"
+                  id="email"
+                  onChange={event => this.onChangeEvent(event)}
+                  required
+                />
+                <label htmlFor="email">Enter your email</label>
               </div>
+            </div>
 
-              <div className="row">
-                <div className="input-field col s12">
-                  <input
-                    className="validate"
-                    type="password"
-                    name="password"
-                    id="password"
-                    onChange={event => this.onChangeEvent(event)}
-                    required
-                  />
-                  <label htmlFor="password">Enter your password</label>
-                </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input
+                  className="validate"
+                  type="password"
+                  name="password"
+                  id="password"
+                  onChange={event => this.onChangeEvent(event)}
+                  required
+                />
+                <label htmlFor="password">Enter your password</label>
               </div>
+            </div>
 
-              <br />
-              <center>
-                <div className="row">
-                  <button
-                    type=""
-                    name="btn_login"
-                    className="col s12 btn btn-large waves-effect red lighten-2"
-                    onClick={this.signup}
-                  >
-                    Signup
-                  </button>
-                </div>
-              </center>
-            {/*</form>*/}
+            <br />
+            <center>
+              <div className="row">
+                <button
+                  type=""
+                  name="btn_login"
+                  className="col s12 btn btn-large waves-effect red lighten-2"
+                  onClick={this.signup}
+                >
+                  Signup
+                </button>
+              </div>
+            </center>
             <a
               href="#!"
               className="right"

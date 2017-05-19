@@ -1,28 +1,52 @@
+import axios from 'axios';
 import Dispatcher from '../dispatcher/appDispatcher';
 import ActionTypes from '../constants/actionTypes';
 
 const AuthenticationActions = {
   signup(bodyData) {
-    fetch('/users', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(bodyData),
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then((data) => {
-        localStorage.setItem('userId', data.uid);
+    axios.post('/users', bodyData)
+      .then((res) => {
         Dispatcher.dispatch({
           actionType: ActionTypes.SET_USERID,
-          data: data.uid,
-          error: data.errorMessage
+          data: res.data.uid
         });
       })
       .catch((error) => {
-        console.log(error);
+        Dispatcher.dispatch({
+          actionType: ActionTypes.SET_ERROR_MESSAGE,
+          data: error.response.data.message
+        });
+      });
+  },
+  login(bodyData) {
+    axios.post('/login', bodyData)
+      .then((res) => {
+        Dispatcher.dispatch({
+          actionType: ActionTypes.SET_USERID,
+          data: res.data.uid
+        });
+      })
+      .catch((error) => {
+        Dispatcher.dispatch({
+          actionType: ActionTypes.SET_ERROR_MESSAGE,
+          data: error.response.data.message
+        });
+      });
+  },
+  resetPassword(bodyData) {
+    axios.post('/resetPassword', bodyData)
+      .then((res) => {
+        Materialize.toast(res.data.message, 4000, 'rounded');
+        Dispatcher.dispatch({
+          actionType: ActionTypes.GET_EMAIL,
+          data: res.data.message
+        });
+      })
+      .catch((error) => {
+        Dispatcher.dispatch({
+          actionType: ActionTypes.SET_ERROR_MESSAGE,
+          data: error.response.data.message
+        });
       });
   }
 };

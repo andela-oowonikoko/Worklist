@@ -35,10 +35,10 @@ todoRouter.post('/users', (req, res) => {
         });
     })
     .catch((error) => {
-      return res.status(409)
+      return res.status(400)
         .send({
-          message: error.code,
-          errorMessage: error.message
+          message: error.message,
+          errorCode: error.code
         });
     });
   } else {
@@ -57,6 +57,30 @@ todoRouter.post('/users', (req, res) => {
   }
 });
 
+todoRouter.post('/resetPassword', (req, res) => {
+  if (req.body.email) {
+    const email = req.body.email;
+
+    firebase.auth().sendPasswordResetEmail(email).then(() => {
+      res.status(200)
+        .send({
+          message: 'Reset password email sent succesfully'
+        });
+    }, (error) => {
+      res.status(400)
+        .send({
+          message: 'This email is not registered, please sign up',
+          errorCode: error.code
+        });
+    });
+  } else {
+    return res.status(400)
+      .send({
+        message: 'Enter a valid email'
+      });
+  }
+});
+
 todoRouter.post('/login', (req, res) => {
   if (req.body.password && req.body.email) {
     const email = req.body.email;
@@ -67,14 +91,35 @@ todoRouter.post('/login', (req, res) => {
       res.status(200)
         .send({
           message: 'You have succesfully signed in',
-          data: data.uid
+          uid: data.uid
         });
     })
     .catch((error) => {
-      return res.status(400)
+      if (error.message.includes('identifier')) {
+        return res.status(400)
+        .send({
+          message: 'This email is not registered, please sign up',
+          errorCode: error.code
+        });
+      } else if (error.message.includes('password')) {
+        return res.status(400)
+        .send({
+          message: 'Your password is invalid',
+          errorCode: error.code
+        });
+      } else if (error.message.includes('network')) {
+        return res.status(400)
+        .send({
+          message: 'Check your internet',
+          errorCode: error.code
+        });
+      } else {
+        return res.status(400)
         .send({
           message: error.message,
+          errorCode: error.code
         });
+      }  
     });
   } else {
     if (!req.body.email) {
