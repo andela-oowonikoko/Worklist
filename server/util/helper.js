@@ -4,7 +4,7 @@ export function dateFrom(endDate) {
   const currentDate = new Date();
   let hours;
   let rule;
-  console.log(currentDate.getDate(), endDate.split('-')[2]);
+
   if (currentDate.getFullYear() < endDate.split('-')[0]) {
     console.log('over a year');
   } else if (currentDate.getMonth() + 1 < endDate.split('-')[1]) {
@@ -15,10 +15,10 @@ export function dateFrom(endDate) {
     (currentDate.getDate() - 1)) * 24) +
     (currentDate.getHours() - 22);
     rule = (hours % 24 === 0) ?
-      `1 * ${hours / 24} * *` :
-      `1 ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
+      `10 * ${hours / 24} * *` :
+      `10 ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
   } else if (currentDate.getDate() === parseInt(endDate.split('-')[2], 10)) {
-    return `1 ${currentDate.getHours() + 1} ${currentDate.getDate()} * *`;
+    return `10 ${currentDate.getHours() + 1} ${currentDate.getDate()} * *`;
   }
   return rule;
 }

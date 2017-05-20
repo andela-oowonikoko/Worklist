@@ -12,7 +12,6 @@ export default function (rule, msg, email) {
     },
 
     init() {
-      console.log('Job created');
       APP.scheduleJob();
     }
   };

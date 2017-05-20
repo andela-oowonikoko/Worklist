@@ -77,6 +77,7 @@ class MyList extends Component {
       complete: this.state.complete,
       date: this.state.date,
       priority: this.state.priority,
+      email: localStorage.getItem('email'),
       userId: localStorage.getItem('userId')
     };
     AddListActions.addlist(bodyData);

@@ -55,13 +55,12 @@ export default class Login extends React.Component {
               photo: user.photoURL,
             },
           );
-          // const firebaseDetails = JSON.parse(
-          //   localStorage.getItem('firebaseui::rememberedAccounts'));
-          // console.log(firebaseDetails);
+          const firebaseDetails = JSON.parse(
+            localStorage.getItem('firebaseui::rememberedAccounts'));
 
           localStorage.setItem('worklist', userDetails);
           localStorage.setItem('userId', JSON.parse(userDetails).uid);
-          // localStorage.setItem('email', firebaseDetails[0].email);
+          localStorage.setItem('email', firebaseDetails[0].email);
           return true;
         },
       },
@@ -113,6 +112,7 @@ export default class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
+    localStorage.setItem('email', bodyData.email);
     AuthenticationActions.signup(bodyData);
   }
 
@@ -125,6 +125,7 @@ export default class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
+    localStorage.setItem('email', bodyData.email);
     AuthenticationActions.login(bodyData);
   }
 

@@ -147,7 +147,7 @@ todoRouter.post('/createtask', (req, res) => {
   const dueDate = req.body.date;
   const complete = req.body.complete || false;
   const priority = req.body.priority || 'normal';
-  const email = 'seunowonikoko@gmail.com';
+  const email = req.body.email;
 
   if (userId && title && task && dueDate && priority) {
     const worklistRef = firebase.database().ref(`${userId}/${title}`);
@@ -161,7 +161,7 @@ todoRouter.post('/createtask', (req, res) => {
         complete,
         date: dueDate
       });
-
+      console.log(email);
       cronJob(dateFrom(dueDate), task, email);
 
       return res.status(201)
