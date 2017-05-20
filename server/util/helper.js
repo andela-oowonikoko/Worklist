@@ -15,10 +15,10 @@ export function dateFrom(endDate) {
     (currentDate.getDate() - 1)) * 24) +
     (currentDate.getHours() - 22);
     rule = (hours % 24 === 0) ?
-      `* * ${hours / 24} * *` :
-      `* ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
+      `1 * ${hours / 24} * *` :
+      `1 ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
   } else if (currentDate.getDate() === parseInt(endDate.split('-')[2], 10)) {
-    return `* ${currentDate.getHours() + 1} ${currentDate.getDate()} * *`;
+    return `1 ${currentDate.getHours() + 1} ${currentDate.getDate()} * *`;
   }
   return rule;
 }

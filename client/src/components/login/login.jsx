@@ -55,8 +55,13 @@ export default class Login extends React.Component {
               photo: user.photoURL,
             },
           );
+          // const firebaseDetails = JSON.parse(
+          //   localStorage.getItem('firebaseui::rememberedAccounts'));
+          // console.log(firebaseDetails);
+
           localStorage.setItem('worklist', userDetails);
           localStorage.setItem('userId', JSON.parse(userDetails).uid);
+          // localStorage.setItem('email', firebaseDetails[0].email);
           return true;
         },
       },
