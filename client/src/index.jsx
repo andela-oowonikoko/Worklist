@@ -5,10 +5,11 @@ import App from './components/common/App';
 require('../dist/scss/style.scss');
 const FetchlistActions = require('./actions/fetchlistActions');
 
-const userDetails = JSON.parse(localStorage.getItem('worklist'));
-const userId = userDetails.uid;
+if (localStorage.getItem('userId')) {
+  const userId = localStorage.getItem('userId');
 
-FetchlistActions.fetchlist(userId);
+  FetchlistActions.fetchlist(userId);
+}
 
 ReactDom.render(
   <App />,

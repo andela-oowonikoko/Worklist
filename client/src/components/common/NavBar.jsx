@@ -5,6 +5,14 @@ import React, { Component } from 'react';
  * @extends {Component}
  */
 class NavBar extends Component {
+  /**
+   * @returns {void}
+   * @memberof NavBar
+   */
+  onClickLogout() {
+    localStorage.clear();
+    window.location = '/app/login';
+  }
 
   /**
    * renders the Nav component
@@ -19,7 +27,7 @@ class NavBar extends Component {
           <div className="brand-logo">Worklist</div>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
-              {(userDetails.photo)
+              {(localStorage.getItem('worklist'))
                 ? <img
                   className="profilePic"
                   src={userDetails.photo}
@@ -29,8 +37,8 @@ class NavBar extends Component {
               }
             </li>
             <li className="logout">
-              {(localStorage.getItem('worklist'))
-                ? <a href="/app/logout">Logout</a>
+              {(localStorage.getItem('userId'))
+                ? <a href="#" onClick={this.onClickLogout}>Logout</a>
                 : ''
               }
             </li>

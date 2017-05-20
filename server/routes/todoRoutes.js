@@ -1,5 +1,8 @@
 import express from 'express';
 import firebase from 'firebase';
+// import moment from 'moment';
+import { dateFrom } from '../util/helper';
+import cronJob from '../util/cronjob';
 
 const todoRouter = express.Router();
 
@@ -35,10 +38,91 @@ todoRouter.post('/users', (req, res) => {
         });
     })
     .catch((error) => {
-      return res.status(409)
+      return res.status(400)
         .send({
           message: error.message,
+          errorCode: error.code
         });
+    });
+  } else {
+    if (!req.body.email) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid email'
+        });
+    }
+    if (!req.body.password) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid password'
+        });
+    }
+  }
+});
+
+todoRouter.post('/resetPassword', (req, res) => {
+  if (req.body.email) {
+    const email = req.body.email;
+
+    firebase.auth().sendPasswordResetEmail(email).then(() => {
+      res.status(200)
+        .send({
+          message: 'Reset password email sent succesfully'
+        });
+    }, (error) => {
+      res.status(400)
+        .send({
+          message: 'This email is not registered, please sign up',
+          errorCode: error.code
+        });
+    });
+  } else {
+    return res.status(400)
+      .send({
+        message: 'Enter a valid email'
+      });
+  }
+});
+
+todoRouter.post('/login', (req, res) => {
+  if (req.body.password && req.body.email) {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((data) => {
+      res.status(200)
+        .send({
+          message: 'You have succesfully signed in',
+          uid: data.uid
+        });
+    })
+    .catch((error) => {
+      if (error.message.includes('identifier')) {
+        return res.status(400)
+        .send({
+          message: 'This email is not registered, please sign up',
+          errorCode: error.code
+        });
+      } else if (error.message.includes('password')) {
+        return res.status(400)
+        .send({
+          message: 'Your password is invalid',
+          errorCode: error.code
+        });
+      } else if (error.message.includes('network')) {
+        return res.status(400)
+        .send({
+          message: 'Check your internet',
+          errorCode: error.code
+        });
+      } else {
+        return res.status(400)
+        .send({
+          message: error.message,
+          errorCode: error.code
+        });
+      }  
     });
   } else {
     if (!req.body.email) {
@@ -63,6 +147,7 @@ todoRouter.post('/createtask', (req, res) => {
   const dueDate = req.body.date;
   const complete = req.body.complete || false;
   const priority = req.body.priority || 'normal';
+  const email = 'seunowonikoko@gmail.com';
 
   if (userId && title && task && dueDate && priority) {
     const worklistRef = firebase.database().ref(`${userId}/${title}`);
@@ -76,6 +161,8 @@ todoRouter.post('/createtask', (req, res) => {
         complete,
         date: dueDate
       });
+
+      cronJob(dateFrom(dueDate), task, email);
 
       return res.status(201)
         .send({
@@ -121,18 +208,18 @@ todoRouter.post('/createtask', (req, res) => {
   }
 });
 
-todoRouter.get('/signout', (req, res) => {
+todoRouter.get('/logout', (req, res) => {
   firebase.auth().signOut()
 
    .then(() => {
      return res.status(200)
         .send({
-          message: 'Signout Succesful'
+          message: 'Logout Succesful'
         });
    }, (error) => {
      return res.status(400)
         .send({
-          message: 'Signout Failed'
+          message: 'Logout Failed'
         });
    });
 });
