@@ -18,7 +18,7 @@ export function dateFrom(endDate) {
       `* * ${hours / 24} * *` :
       `* ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
   } else if (currentDate.getDate() === parseInt(endDate.split('-')[2], 10)) {
-    return '* * * * *';
+    return `* ${currentDate.getHours() + 1} ${currentDate.getDate()} * *`;
   }
   return rule;
 }
