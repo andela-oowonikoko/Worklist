@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Row, Input } from 'react-materialize';
+import Mytask from './MyTask';
 import NavBar from '../common/NavBar';
 import FetchlistStore from '../../stores/fetchlistStore';
 import AddListActions from '../../actions/addListActions';
@@ -113,8 +114,7 @@ class MyList extends Component {
           header="Add TODO List"
           trigger={
             <Button
-              className="btn-floating btn-large
-              waves-effect waves-light red addList right"
+              className="btn-floating btn-large waves-effect waves-light red addList right"
             >
               <i className="material-icons">add</i>
             </Button>}
@@ -192,31 +192,15 @@ class MyList extends Component {
           </form>
         </Modal>
         <div className="myLists">
-          {Object.keys(listsToDisplay).map((key, index) => {
+          {Object.keys(listsToDisplay).map((listKey, index) => {
             return (
               <div className="todoTitle" key={index}>
-                <p className="todoTitlePara" id={index}>{key}</p>
-                {Object.keys(listsToDisplay[key]).map((task, secondIndex) => {
-                  const taskToDisplay = listsToDisplay[key][task];
-                  return (
-                    <div
-                      key={secondIndex}
-                      className="todoContents"
-                      id={secondIndex}
-                    >
-                      {taskToDisplay.content}
-                      {taskToDisplay.priority === 'normal' &&
-                        <div className="right blue normalDiv taskRight" />}
-                      {taskToDisplay.priority === 'urgent' &&
-                        <div className="right yellow normalDiv taskRight" />}
-                      {taskToDisplay.priority === 'critical' &&
-                        <div className="right red normalDiv taskRight" />}
-                      <div className="right grey lighten-1 taskRight">
-                        {taskToDisplay.date}
-                      </div>
-                    </div>
-                  );
-                })}
+                <p className="todoTitlePara" id={index}>{listKey}</p>
+                <Mytask
+                  listsToDisplay={listsToDisplay}
+                  listKey={listKey}
+                  listIndex={index}
+                />
               </div>
             );
           })}

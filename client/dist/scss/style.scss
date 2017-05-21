@@ -98,3 +98,20 @@
 .btnAddTask {
   width: 200px;
 }
+
+.deleteIcon:hover {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.doneBtn {
+  height: 25px;
+  width: 50px;
+  color: grey;
+}
+
+.doneToggledBtn {
+  height: 25px;
+  width: 50px;
+  color: green;
+}

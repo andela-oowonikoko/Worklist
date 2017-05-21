@@ -140,6 +140,34 @@ todoRouter.post('/login', (req, res) => {
   }
 });
 
+todoRouter.post('/deletelist', (req, res) => {
+  const userId = req.body.userId;
+  const title = req.body.title;
+
+  const worklistRef = firebase.database().ref(`${userId}/${title}`);
+  worklistRef.remove();
+
+  return res.status(200)
+    .send({
+      message: 'Your list has been deleted',
+    });
+});
+
+todoRouter.get('/sharelist/', (req, res) => {
+  const userId = req.query.uid;
+  const title = req.query.title;
+
+  const worklistRef = firebase.database().ref(`${userId}/${title}`);
+
+  worklistRef.once('value').then((snapshot) => {
+    res.status(200)
+      .send({
+        message: 'Your ToDo List',
+        data: snapshot.val()
+      });
+  });
+});
+
 todoRouter.post('/createtask', (req, res) => {
   const userId = req.body.userId;
   const title = req.body.title;
@@ -161,7 +189,7 @@ todoRouter.post('/createtask', (req, res) => {
         complete,
         date: dueDate
       });
-      console.log(email);
+
       cronJob(dateFrom(dueDate), task, email);
 
       return res.status(201)
@@ -197,6 +225,45 @@ todoRouter.post('/createtask', (req, res) => {
       return res.status(400)
         .send({
           message: 'Priority cannot be empty'
+        });
+    }
+    if (!userId) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid userId'
+        });
+    }
+  }
+});
+
+todoRouter.post('/updatelist', (req, res) => {
+  const userId = req.body.userId;
+  const title = req.body.title;
+  const taskKey = req.body.taskKey;
+
+  if (userId && title && taskKey) {
+    const worklistRef = firebase.database()
+      .ref(`${userId}/${title}/${taskKey}`);
+
+    worklistRef.update({
+      complete: true
+    });
+
+    return res.status(200)
+      .send({
+        message: 'Your task is done'
+      });
+  } else {
+    if (!title) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid title'
+        });
+    }
+    if (!taskKey) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid taskKey'
         });
     }
     if (!userId) {
