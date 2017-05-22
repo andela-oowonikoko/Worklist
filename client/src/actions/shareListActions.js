@@ -10,12 +10,6 @@ const ShareListActions = {
           actionType: ActionTypes.SET_SHARE_LIST,
           data: res.data.data
         });
-      })
-      .catch((error) => {
-        Dispatcher.dispatch({
-          actionType: ActionTypes.SET_ERROR_MESSAGE,
-          data: error.response.data.message
-        });
       });
   }
 };

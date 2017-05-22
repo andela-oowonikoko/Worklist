@@ -190,7 +190,9 @@ todoRouter.post('/createtask', (req, res) => {
         date: dueDate
       });
 
-      cronJob(dateFrom(dueDate), task, email);
+      if (email) {
+        cronJob(dateFrom(dueDate), task, email);
+      }
 
       return res.status(201)
         .send({
