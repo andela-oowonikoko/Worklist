@@ -1,40 +1,40 @@
 import React, { Component } from 'react';
-import ErrorStore from '../../stores/errorStore';
+import SuccessStore from '../../stores/successStore';
 
 /**
- * @class Error
+ * @class Success
  * @extends {Component}
  */
-class Error extends Component {
+class Success extends Component {
     /**
    * Gets the todolists created by the user
-   * @memberOf Error
+   * @memberOf Success
    * @returns {void}
    */
   componentDidMount() {
-    ErrorStore.addChangeListener(this.onChange);
+    SuccessStore.addChangeListener(this.onChange);
   }
 
   /**
    * Removes the listener on the FetchlistStore
-   * @memberof Error
+   * @memberof Success
    * @returns {void}
    */
   componentWillUnmount() {
-    ErrorStore.removeChangeListener(this.onChange);
+    SuccessStore.removeChangeListener(this.onChange);
   }
 
   /**
-   * @memberof Error
+   * @memberof Success
    * @returns {void}
    */
   onChange() {
-    Materialize.toast(ErrorStore.getMessage(), 4000, 'rounded');
+    Materialize.toast(SuccessStore.getMessage(), 4000, 'rounded');
   }
   /**
-   * renders the Error component
+   * renders the Success component
    * @returns {void}
-   * @memberOf Error
+   * @memberOf Success
    */
   render() {
     return (
@@ -43,4 +43,4 @@ class Error extends Component {
   }
 }
 
-export default Error;
+export default Success;

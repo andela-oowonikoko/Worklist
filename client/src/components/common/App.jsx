@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, browserHistory } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import Error from '../error/Error';
+import Success from '../success/Success';
+import ShareList from '../share/ShareList';
 import Login from '../login/login';
 import MyList from '../user/MyList';
+import Profile from '../profile/Profile';
 
 
 /**
@@ -18,11 +21,14 @@ class App extends Component {
    */
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter history={browserHistory}>
         <div>
           <Error />
+          <Success />
           <Route path="/app/login" component={Login} />
           <Route path="/app/mylist" component={MyList} />
+          <Route path="/app/profile" component={Profile} />
+          <Route path="/app/sharelist/" component={ShareList} />
         </div>
       </BrowserRouter>
     );

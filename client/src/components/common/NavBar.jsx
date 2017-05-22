@@ -36,6 +36,18 @@ class NavBar extends Component {
                 : ''
               }
             </li>
+            <li>
+              {(localStorage.getItem('userId'))
+                ? <a href="/app/mylist">My List</a>
+                : ''
+              }
+            </li>
+            <li>
+              {(localStorage.getItem('userId'))
+                ? <a href="/app/profile">Profile</a>
+                : ''
+              }
+            </li>
             <li className="logout">
               {(localStorage.getItem('userId'))
                 ? <a href="#" onClick={this.onClickLogout}>Logout</a>
