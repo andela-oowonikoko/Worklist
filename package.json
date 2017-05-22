@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-watch server.js",
-    "test": "istanbul cover _mocha -- -R spec server/test/*.spec.js --compilers js:babel-core/register"
+    "test": "nyc --reporter=html --reporter=text _mocha --reporter spec server/test/**/*.spec.js --compilers js:babel-core/register --timeout 20000"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "eslint-plugin-react": "^7.0.1",
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
+    "faker": "^4.1.0",
     "file-loader": "^0.11.1",
     "firebase": "^3.9.0",
     "firebaseui": "^1.0.1",
@@ -56,12 +57,14 @@
     "node-sass": "^4.5.2",
     "node-schedule": "^1.2.1",
     "nodemailer": "^4.0.1",
+    "nyc": "^10.3.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-materialize": "^0.18.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "sass-loader": "^6.0.5",
+    "supertest": "^3.0.0",
     "url-loader": "^0.5.8",
     "webpack": "^1.4.15",
     "webpack-dev-middleware": "^1.10.2",
