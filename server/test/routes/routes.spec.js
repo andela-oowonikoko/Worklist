@@ -184,7 +184,6 @@ describe('TODO lIST API', () => {
       superRequest.get(`/users/?q=${userId}`)
       .end((err, res) => {
         lists = res.body.data;
-        console.log(lists);
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Your ToDo Lists');
         expect(res.body.data).to.exist;
