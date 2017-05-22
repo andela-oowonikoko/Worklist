@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../firebaseConfig';
 import NavBar from '../common/NavBar';
+import AuthenticationActions from '../../actions/authenticationActions';
 
 /**
  * @class Profile
@@ -16,11 +17,13 @@ class Profile extends Component {
     super(props);
     this.state = {
       fileUploaded: '',
-      fileExtension: ''
+      fileExtension: '',
+      email: ''
     };
 
-    this.onChange = this.onChange.bind(this);
+    this.onChangeFile = this.onChangeFile.bind(this);
     this.uploadPicture = this.uploadPicture.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   /**
@@ -28,7 +31,16 @@ class Profile extends Component {
    * @returns {object} object
    * @memberOf Profile
    */
-  onChange(event) {
+  onChangeEvent(event) {
+    return this.setState({ [event.target.name]: event.target.value });
+  }
+
+  /**
+   * @param {any} event
+   * @returns {object} object
+   * @memberOf Profile
+   */
+  onChangeFile(event) {
     const fileUploaded = event.target.files[0];
 
     if (fileUploaded) {
@@ -36,6 +48,21 @@ class Profile extends Component {
       const fileArrayLength = fileArray.length - 1;
       const fileExtension = fileArray[fileArrayLength].split('.')[1];
       this.setState({ fileUploaded, fileExtension });
+    }
+  }
+
+  /**
+   * @returns {void}
+   * @memberof Profile
+   */
+  resetPassword() {
+    if (this.state.email !== '') {
+      const bodyData = {
+        email: this.state.email,
+      };
+      AuthenticationActions.resetPassword(bodyData);
+    } else {
+      Materialize.toast('Enter a valid email', 4000, 'rounded');
     }
   }
 
@@ -78,13 +105,41 @@ class Profile extends Component {
           <input
             type="file"
             id="pictureChosen"
-            onChange={this.onChange}
+            onChange={this.onChangeFile}
           />
           <button
             onClick={this.uploadPicture}
           >
             Upload
           </button>
+          <div className="forgotDiv center">
+            <p>Reset Password</p>
+            <div className="row">
+              <center>
+                <div className="input-field col s6">
+                  <input
+                    className="validate"
+                    type="email"
+                    name="email"
+                    id="email"
+                    onChange={event => this.onChangeEvent(event)}
+                    required
+                  />
+                  <label htmlFor="email">Enter your email</label>
+                </div>
+                <div className="row">
+                  <button
+                    type=""
+                    name="btn_login"
+                    className="col s3 btn waves-effect red lighten-2"
+                    onClick={this.resetPassword}
+                  >
+                    Reset Password
+                  </button>
+                </div>
+              </center>
+            </div>
+          </div>
         </div>
       </div>
     );
