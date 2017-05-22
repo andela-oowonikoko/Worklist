@@ -38,7 +38,8 @@ class ShareList extends Component {
   componentDidMount() {
     const queryParams = this.props.location.search.split('&');
     const uid = queryParams[0].split('=')[1];
-    const title = queryParams[1].split('=')[1];
+    let title = queryParams[1].split('=')[1];
+    title = title.split('%20').join(' ');
     this.setTitle(title);
     this.setUserId(uid);
     ShareListActions.getsharelist(uid, title);

@@ -38,6 +38,12 @@ class NavBar extends Component {
             </li>
             <li>
               {(localStorage.getItem('userId'))
+                ? <a href="/app/mylist">My List</a>
+                : ''
+              }
+            </li>
+            <li>
+              {(localStorage.getItem('userId'))
                 ? <a href="/app/profile">Profile</a>
                 : ''
               }
