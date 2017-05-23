@@ -1,10 +1,17 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DotEnvPlugin = require('dotenv-webpack');
 
-const dotenvPlugin = new DotEnvPlugin({
-  path: '.env',
+const envsDefinePlugin = new webpack.DefinePlugin({
+  'process.env.APIKEY': JSON.stringify(process.env.APIKEY),
+  'process.env.AUTHDOMAIN': JSON.stringify(process.env.AUTHDOMAIN),
+  'process.env.DATABASEURL': JSON.stringify(process.env.DATABASEURL),
+  'process.env.PROJECTID': JSON.stringify(process.env.PROJECTID),
+  'process.env.STORAGEBUCKET': JSON.stringify(process.env.STORAGEBUCKET),
+  'process.env.MESSAGINGSENDERID': JSON
+    .stringify(process.env.MESSAGINGSENDERID),
+  'process.env.GMAIL_PASS': JSON.stringify(process.env.GMAIL_PASS),
+  'process.env.GMAIL': JSON.stringify(process.env.GMAIL)
 });
 
 module.exports = {
@@ -61,7 +68,7 @@ module.exports = {
     fs: 'empty'
   },
   plugins: [
-    dotenvPlugin,
+    envsDefinePlugin,
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
