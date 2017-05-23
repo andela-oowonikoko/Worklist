@@ -11,15 +11,15 @@ let lists = {};
 
 describe('TODO lIST API', () => {
   describe('CREATE USER', () => {
-    // it('should create a user', (done) => {
-    //   superRequest.post('/users')
-    //   .send(helper.newCredentials)
-    //   .end((err, res) => {
-    //     expect(res.status).to.equal(201);
-    //     expect(res.body.message).to.equal('Your account has been successfully created');
-    //     done();
-    //   });
-    // });
+    it('should create a user', (done) => {
+      superRequest.post('/users')
+      .send(helper.newCredentials)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.message).to.equal('Your account has been successfully created');
+        done();
+      });
+    });
 
     it('should not allow an existing user to create an account', (done) => {
       superRequest.post('/users')
@@ -106,6 +106,38 @@ describe('TODO lIST API', () => {
     });
   });
 
+  describe('RESET PASSWORD', () => {
+    it('should send a mail to the user to reset password', (done) => {
+      superRequest.post('/resetPassword')
+      .send(helper.loginNoPassword)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal('Reset password email sent succesfully');
+        done();
+      });
+    });
+
+    it('should not send a mail to an unregistered email', (done) => {
+      superRequest.post('/resetPassword')
+      .send(helper.noPasswordCredential)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('This email is not registered, please sign up');
+        done();
+      });
+    });
+
+    it('should not send a mail if email is not provided', (done) => {
+      superRequest.post('/resetPassword')
+      .send({})
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('Enter a valid email');
+        done();
+      });
+    });
+  });
+
   describe('CREATE LIST', () => {
     it('should create a new list for a user', (done) => {
       helper.createList.userId = userId;
@@ -179,6 +211,18 @@ describe('TODO lIST API', () => {
     });
   });
 
+  describe('SHARE TODO LIST', () => {
+    it('should have a valid route for user to share list', (done) => {
+      const title = helper.createList.title;
+      superRequest.get(`/sharelist/?uid=${userId}&title=${title}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.equal('Your ToDo List');
+        done();
+      });
+    });
+  });
+
   describe('RETRIEVE LIST', () => {
     it('should retrieve a user\'s lists', (done) => {
       superRequest.get(`/users/?q=${userId}`)
@@ -187,6 +231,31 @@ describe('TODO lIST API', () => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.equal('Your ToDo Lists');
         expect(res.body.data).to.exist;
+        done();
+      });
+    });
+  });
+
+  describe('UPDATE LIST', () => {
+    it('should not update a user\'s lists without a taskKey', (done) => {
+      helper.updateData.userId = userId;
+      superRequest.post('/updatelist')
+      .send(helper.updateData)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('Enter a valid taskKey');
+        done();
+      });
+    });
+
+    it('should not update a user\'s lists without a title', (done) => {
+      helper.updateData.userId = userId;
+      helper.updateData.title = null;
+      superRequest.post('/updatelist')
+      .send(helper.updateData)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal('Enter a valid title');
         done();
       });
     });
