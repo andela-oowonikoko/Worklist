@@ -115,6 +115,7 @@ class MyList extends Component {
           trigger={
             <Button
               className="btn-floating btn-large waves-effect waves-light red addList right"
+              id="btnAddTask"
             >
               <i className="material-icons">add</i>
             </Button>}
