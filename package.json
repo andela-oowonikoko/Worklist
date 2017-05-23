@@ -6,7 +6,8 @@
   "scripts": {
     "start": "babel-watch server.js",
     "test": "nyc --reporter=lcov --reporter=text _mocha --reporter spec server/test/**/*.spec.js --compilers js:babel-core/register --timeout 20000",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "e2e": "node_modules/.bin/nightwatch --config nightwatch.config.js"
   },
   "repository": {
     "type": "git",
@@ -68,6 +69,7 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "sass-loader": "^6.0.5",
+    "selenium-download": "^2.0.10",
     "supertest": "^3.0.0",
     "url-loader": "^0.5.8",
     "webpack": "^1.4.15",

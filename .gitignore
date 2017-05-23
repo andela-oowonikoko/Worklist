@@ -1,5 +1,8 @@
 /.nyc_output
 /coverage
+/reports
+/screenshots
 /node_modules
 .env
 npm-debug.log
+selenium-debug.log
