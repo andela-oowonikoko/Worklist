@@ -216,6 +216,7 @@ export default class Login extends React.Component {
                 <button
                   type="submit"
                   name="btn_login"
+                  id="btnLogin"
                   className="col s12 btn btn-large waves-effect red lighten-2"
                   onClick={this.login}
                 >
@@ -244,7 +245,7 @@ export default class Login extends React.Component {
                   className="validate"
                   type="email"
                   name="email"
-                  id="email"
+                  id="signupEmail"
                   onChange={event => this.onChangeEvent(event)}
                   required
                 />
@@ -258,7 +259,7 @@ export default class Login extends React.Component {
                   className="validate"
                   type="password"
                   name="password"
-                  id="password"
+                  id="signupPassword"
                   onChange={event => this.onChangeEvent(event)}
                   required
                 />
@@ -273,6 +274,7 @@ export default class Login extends React.Component {
                   type=""
                   name="btn_login"
                   className="col s12 btn btn-large waves-effect red lighten-2"
+                  id="btnSignup"
                   onClick={this.signup}
                 >
                   Signup

@@ -38,7 +38,7 @@ class NavBar extends Component {
             </li>
             <li>
               {(localStorage.getItem('userId'))
-                ? <a href="/app/mylist">My List</a>
+                ? <a href="/app/mylist" id="mylistLink">My List</a>
                 : ''
               }
             </li>
