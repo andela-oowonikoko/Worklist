@@ -106,6 +106,9 @@ class MyList extends Component {
    */
   render() {
     const listsToDisplay = this.state.lists;
+    const emptyMessage = (
+      <p className="noListPara">You do not have any todo lists yet</p>
+    );
 
     return (
       <div>
@@ -192,6 +195,7 @@ class MyList extends Component {
             </button>
           </form>
         </Modal>
+        {listsToDisplay === null ? emptyMessage :
         <div className="myLists">
           {Object.keys(listsToDisplay).map((listKey, index) => {
             return (
@@ -205,7 +209,7 @@ class MyList extends Component {
               </div>
             );
           })}
-        </div>
+        </div>}   
       </div>
     );
   }
