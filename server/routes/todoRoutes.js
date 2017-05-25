@@ -1,6 +1,5 @@
 import express from 'express';
 import firebase from 'firebase';
-// import moment from 'moment';
 import { dateFrom } from '../util/helper';
 import cronJob from '../util/cronjob';
 

@@ -21,7 +21,7 @@ describe('TODO lIST API', () => {
       });
     });
 
-    it('should not allow an existing user to create an account', (done) => {
+    it('should display an error if the user already exists', (done) => {
       superRequest.post('/users')
       .send(helper.loginCredentials)
       .end((err, res) => {

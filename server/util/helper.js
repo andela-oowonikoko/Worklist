@@ -13,7 +13,7 @@ export function dateFrom(endDate) {
   } else if (currentDate.getDate() < endDate.split('-')[2]) {
     hours = ((endDate.split('-')[2] -
     (currentDate.getDate() - 1)) * 24) +
-    (currentDate.getHours() - 22);
+    (currentDate.getHours());
     rule = (hours % 24 === 0) ?
       `10 * ${hours / 24} * *` :
       `10 ${hours % 24} ${Math.floor(hours / 24) + currentDate.getDate()} * *`;
