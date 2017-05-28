@@ -1,22 +1,20 @@
+import axios from 'axios';
 import Dispatcher from '../dispatcher/appDispatcher';
 import ActionTypes from '../constants/actionTypes';
 
 const AddListActions = {
   addlist(bodyData) {
-    fetch('/createtask', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(bodyData),
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then((data) => {
+    axios.post('/createtask', bodyData)
+      .then((res) => {
         Dispatcher.dispatch({
           actionType: ActionTypes.ADD_LIST,
-          data
+          data: res.data.message
+        });
+      })
+      .catch((error) => {
+        Dispatcher.dispatch({
+          actionType: ActionTypes.SET_ERROR_MESSAGE,
+          data: error.response.data.message
         });
       });
   }
