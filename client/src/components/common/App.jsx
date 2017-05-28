@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Error from '../error/Error';
 import Success from '../success/Success';
 import ShareList from '../share/ShareList';
-import Login from '../login/login';
+import Login from '../login/Login';
 import MyList from '../user/MyList';
 import Profile from '../profile/Profile';
 

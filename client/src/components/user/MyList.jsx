@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Modal, Button, Row, Input } from 'react-materialize';
 import Mytask from './MyTask';
 import NavBar from '../common/NavBar';
-import FetchlistStore from '../../stores/fetchlistStore';
-import AddListActions from '../../actions/addListActions';
+import FetchlistStore from '../../stores/FetchlistStore';
+import AddListActions from '../../actions/AddListActions';
 
 
 /**

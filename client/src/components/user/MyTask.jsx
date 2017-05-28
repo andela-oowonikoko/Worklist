@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MyTaskContent from './MyTaskContent';
-import deleteListActions from '../../actions/deleteListActions';
+import deleteListActions from '../../actions/DeleteListActions';
 
 /**
  * @class MyTask

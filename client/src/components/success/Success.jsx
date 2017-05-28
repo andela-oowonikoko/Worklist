@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SuccessStore from '../../stores/successStore';
+import SuccessStore from '../../stores/SuccessStore';
 
 /**
  * @class Success

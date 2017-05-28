@@ -5,11 +5,11 @@ import cronJob from '../util/cronjob';
 
 const todoRouter = express.Router();
 
-todoRouter.route('/')
-  .get((req, res) => {
-    res.status(200).send("{ message: 'Welcome to Worklist API' }");
-  });
-
+/**
+ * Fetches todo lists belonging to a user
+ * GET /users/?q={userId}
+ * @returns {object} object
+ */
 todoRouter.get('/users/', (req, res) => {
   const userId = req.query.q;
   const worklistRef = firebase.database().ref(`${userId}/`);
@@ -23,6 +23,11 @@ todoRouter.get('/users/', (req, res) => {
   });
 });
 
+/**
+ * Creates a user
+ * POST /users
+ * @returns {string} user Id
+ */
 todoRouter.post('/users', (req, res) => {
   if (req.body.password && req.body.email) {
     const email = req.body.email;
@@ -59,6 +64,11 @@ todoRouter.post('/users', (req, res) => {
   }
 });
 
+/**
+ * Reset a user's password
+ * POST /resetPassword
+ * @returns {string} message
+ */
 todoRouter.post('/resetPassword', (req, res) => {
   if (req.body.email) {
     const email = req.body.email;
@@ -69,7 +79,7 @@ todoRouter.post('/resetPassword', (req, res) => {
           message: 'Reset password email sent succesfully'
         });
     }, (error) => {
-      res.status(400)
+      res.status(404)
         .send({
           message: 'This email is not registered, please sign up',
           errorCode: error.code
@@ -83,6 +93,11 @@ todoRouter.post('/resetPassword', (req, res) => {
   }
 });
 
+/**
+ * Logs a user in
+ * POST /login
+ * @returns {string} user Id
+ */
 todoRouter.post('/login', (req, res) => {
   if (req.body.password && req.body.email) {
     const email = req.body.email;
@@ -97,31 +112,32 @@ todoRouter.post('/login', (req, res) => {
         });
     })
     .catch((error) => {
-      if (error.message.includes('identifier')) {
-        return res.status(400)
-        .send({
-          message: 'This email is not registered, please sign up',
-          errorCode: error.code
-        });
-      } else if (error.message.includes('password')) {
-        return res.status(400)
-        .send({
-          message: 'Your password is invalid',
-          errorCode: error.code
-        });
-      } else if (error.message.includes('network')) {
-        return res.status(400)
-        .send({
-          message: 'Check your internet',
-          errorCode: error.code
-        });
-      } else {
-        return res.status(400)
-        .send({
-          message: error.message,
-          errorCode: error.code
-        });
-      }  
+      switch (error.code) {
+        case 'auth/user-not-found':
+          return res.status(400)
+          .send({
+            message: 'This email is not registered, please sign up',
+            errorCode: error.code
+          });
+        case 'auth/wrong-password':
+          return res.status(400)
+          .send({
+            message: 'Your password is invalid',
+            errorCode: error.code
+          });
+        case 'auth/network-request-failed':
+          return res.status(400)
+          .send({
+            message: 'Check your internet',
+            errorCode: error.code
+          });
+        default:
+          return res.status(400)
+          .send({
+            message: error.message,
+            errorCode: error.code
+          });
+      }
     });
   } else {
     if (!req.body.email) {
@@ -139,6 +155,11 @@ todoRouter.post('/login', (req, res) => {
   }
 });
 
+/**
+ * Deletes a list
+ * POST /deletelist
+ * @returns {string} message
+ */
 todoRouter.post('/deletelist', (req, res) => {
   const userId = req.body.userId;
   const title = req.body.title;
@@ -152,6 +173,11 @@ todoRouter.post('/deletelist', (req, res) => {
     });
 });
 
+/**
+ * Shares a user's list
+ * GET /sharelist/?uid={userId}&title={title}
+ * @returns {object} data
+ */
 todoRouter.get('/sharelist/', (req, res) => {
   const userId = req.query.uid;
   const title = req.query.title;
@@ -167,6 +193,11 @@ todoRouter.get('/sharelist/', (req, res) => {
   });
 });
 
+/**
+ * Creates a new task for a user
+ * POST /createtask
+ * @returns {string} message
+ */
 todoRouter.post('/createtask', (req, res) => {
   const userId = req.body.userId;
   const title = req.body.title;
@@ -237,6 +268,11 @@ todoRouter.post('/createtask', (req, res) => {
   }
 });
 
+/**
+ * Updates a user's list
+ * POST /updatelist
+ * @returns {string} message
+ */
 todoRouter.post('/updatelist', (req, res) => {
   const userId = req.body.userId;
   const title = req.body.title;
@@ -276,6 +312,11 @@ todoRouter.post('/updatelist', (req, res) => {
   }
 });
 
+/**
+ * Logs a user out
+ * POST /logout
+ * @returns {string} message
+ */
 todoRouter.get('/logout', (req, res) => {
   firebase.auth().signOut()
 

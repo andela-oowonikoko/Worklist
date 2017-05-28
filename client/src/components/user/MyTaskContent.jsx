@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UpdateListActions from '../../actions/updateListActions';
+import UpdateListActions from '../../actions/UpdateListActions';
 
 /**
  * @class MyTaskContent

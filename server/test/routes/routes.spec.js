@@ -16,7 +16,8 @@ describe('TODO lIST API', () => {
       .send(helper.newCredentials)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('Your account has been successfully created');
+        expect(res.body.message)
+          .to.equal('Your account has been successfully created');
         done();
       });
     });
@@ -26,7 +27,8 @@ describe('TODO lIST API', () => {
       .send(helper.loginCredentials)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('The email address is already in use by another account.');
+        expect(res.body.message)
+          .to.equal('The email address is already in use by another account.');
         done();
       });
     });
@@ -80,7 +82,8 @@ describe('TODO lIST API', () => {
       .send(helper.wrongEmail)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('This email is not registered, please sign up');
+        expect(res.body.message)
+          .to.equal('This email is not registered, please sign up');
         done();
       });
     });
@@ -112,7 +115,8 @@ describe('TODO lIST API', () => {
       .send(helper.loginNoPassword)
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body.message).to.equal('Reset password email sent succesfully');
+        expect(res.body.message)
+          .to.equal('Reset password email sent succesfully');
         done();
       });
     });
@@ -122,7 +126,8 @@ describe('TODO lIST API', () => {
       .send(helper.noPasswordCredential)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal('This email is not registered, please sign up');
+        expect(res.body.message)
+          .to.equal('This email is not registered, please sign up');
         done();
       });
     });

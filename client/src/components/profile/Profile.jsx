@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../firebaseConfig';
 import NavBar from '../common/NavBar';
-import AuthenticationActions from '../../actions/authenticationActions';
+import AuthenticationActions from '../../actions/AuthenticationActions';
 
 /**
  * @class Profile

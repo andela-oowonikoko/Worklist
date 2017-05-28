@@ -1,8 +1,8 @@
 import React from 'react';
 import firebase from '../../firebaseConfig';
 import NavBar from '../common/NavBar';
-import AuthenticationActions from '../../actions/authenticationActions';
-import AuthenticationStore from '../../stores/authenticationStore';
+import AuthenticationActions from '../../actions/AuthenticationActions';
+import AuthenticationStore from '../../stores/AuthenticationStore';
 
 /**
  * Displays the Login Page
