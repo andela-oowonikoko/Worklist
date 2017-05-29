@@ -16,7 +16,7 @@ class MyTask extends Component {
     super(props);
     this.state = {
       title: this.props.listKey,
-      userId: localStorage.getItem('userId'),
+      userId: JSON.parse(localStorage.getItem('worklist')).uid,
     };
     this.onDeleteList = this.onDeleteList.bind(this);
   }

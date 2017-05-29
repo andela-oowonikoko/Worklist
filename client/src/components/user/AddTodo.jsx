@@ -46,8 +46,8 @@ class AddTodo extends Component {
       complete: this.state.complete,
       date: this.state.date,
       priority: this.state.priority,
-      email: localStorage.getItem('email'),
-      userId: localStorage.getItem('userId')
+      email: JSON.parse(localStorage.getItem('worklist')).email,
+      userId: JSON.parse(localStorage.getItem('worklist')).uid
     };
     AddListActions.addlist(bodyData);
     $('#appendTask').append(

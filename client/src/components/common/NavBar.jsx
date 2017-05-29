@@ -26,34 +26,32 @@ class NavBar extends Component {
         <div className="nav-wrapper">
           <div className="brand-logo">Worklist</div>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>
-              {(localStorage.getItem('worklist'))
-                ? <img
-                  className="profilePic"
-                  src={userDetails.photo}
-                  alt="profile pic"
-                />
-                : ''
-              }
-            </li>
-            <li>
-              {(localStorage.getItem('userId'))
-                ? <a href="/app/mylist" id="mylistLink">My List</a>
-                : ''
-              }
-            </li>
-            <li>
-              {(localStorage.getItem('userId'))
-                ? <a href="/app/profile">Profile</a>
-                : ''
-              }
-            </li>
-            <li className="logout">
-              {(localStorage.getItem('userId'))
-                ? <a href="#" onClick={this.onClickLogout}>Logout</a>
-                : ''
-              }
-            </li>
+            {(localStorage.getItem('worklist'))
+              ?
+                <div>
+                  <li>
+                    {JSON.parse(localStorage.getItem('worklist')).photo
+                      ? <img
+                        className="profilePic"
+                        src={userDetails.photo}
+                        alt="profile pic"
+                      />
+                      : ''
+                    }
+                  </li>
+                  <li>
+                    <a href="/app/mylist" id="mylistLink">My List</a>
+                  </li>
+                  <li>
+                    <a href="/app/profile">Profile</a>
+                  </li>
+                  <li className="logout">
+                    <a href="#" onClick={this.onClickLogout}>Logout</a>
+                  </li>
+                </div>
+              :
+              ''
+            }
           </ul>
         </div>
       </nav>

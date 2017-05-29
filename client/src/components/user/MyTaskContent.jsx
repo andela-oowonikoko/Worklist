@@ -14,7 +14,7 @@ class MyTaskContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: localStorage.getItem('userId'),
+      userId: JSON.parse(localStorage.getItem('worklist')).uid,
       title: this.props.listKey,
       taskKey: this.props.taskKey
     };

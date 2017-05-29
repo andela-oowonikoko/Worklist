@@ -57,10 +57,9 @@ export default class Login extends React.Component {
           );
           const firebaseDetails = JSON.parse(
             localStorage.getItem('firebaseui::rememberedAccounts'));
+          userDetails['email'] = firebaseDetails[0].email;
 
           localStorage.setItem('worklist', userDetails);
-          localStorage.setItem('userId', JSON.parse(userDetails).uid);
-          localStorage.setItem('email', firebaseDetails[0].email);
           return true;
         },
       },
@@ -89,7 +88,8 @@ export default class Login extends React.Component {
     this.setState({ resetPWD: AuthenticationStore.getResetMessage() });
 
     if (this.state.userId) {
-      localStorage.setItem('userId', this.state.userId);
+      localStorage.setItem('worklist', JSON.stringify({ uid: this.state.userId,
+        email: this.state.email }));
       window.location = '/app/mylist';
     }
   }
@@ -112,7 +112,6 @@ export default class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    localStorage.setItem('email', bodyData.email);
     AuthenticationActions.signup(bodyData);
   }
 
@@ -125,7 +124,6 @@ export default class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    localStorage.setItem('email', bodyData.email);
     AuthenticationActions.login(bodyData);
   }
 
