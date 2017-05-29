@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, browserHistory } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import Error from '../error/Error';
@@ -9,8 +9,10 @@ import MyList from '../user/MyList';
 import Profile from '../profile/Profile';
 
 
+
 /**
- * App
+ * @export
+ * @returns {void}
  */
 export default function App() {
   /**
