@@ -10,29 +10,25 @@ import Profile from '../profile/Profile';
 
 
 /**
- * @class App
- * @extends {Component}
+ * App
  */
-class App extends Component {
+export default function App() {
   /**
    * renders the app component
    * @returns {void}
    * @memberOf App
    */
-  render() {
-    return (
-      <BrowserRouter history={browserHistory}>
-        <div>
-          <Error />
-          <Success />
-          <Route path="/app/login" component={Login} />
-          <Route path="/app/mylist" component={MyList} />
-          <Route path="/app/profile" component={Profile} />
-          <Route path="/app/sharelist/" component={ShareList} />
-        </div>
-      </BrowserRouter>
-    );
-  }
+  return (
+    <BrowserRouter history={browserHistory}>
+      <div>
+        <Error />
+        <Success />
+        <Route path="/app/login" component={Login} />
+        <Route path="/app/mylist" component={MyList} />
+        <Route path="/app/profile" component={Profile} />
+        <Route path="/app/sharelist/" component={ShareList} />
+      </div>
+    </BrowserRouter>
+  );
 }
 
-export default App;
