@@ -56,15 +56,6 @@ class MyList extends Component {
   }
 
   /**
-   * @param {any} event
-   * @returns {object} object
-   * @memberOf MyList
-   */
-  onChangeEvent(event) {
-    return this.setState({ [event.target.name]: event.target.value });
-  }
-
-  /**
    * renders the MyList component
    * @returns {void}
    * @memberOf MyList
@@ -83,7 +74,7 @@ class MyList extends Component {
         <div className="myLists">
           {Object.keys(listsToDisplay).map((listKey, index) => {
             return (
-              <div className="todoTitle" key={index}>
+              <div className="todoTitle" key={listKey}>
                 <p className="todoTitlePara" id={index}>{listKey}</p>
                 <Mytask
                   listsToDisplay={listsToDisplay}

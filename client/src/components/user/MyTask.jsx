@@ -60,7 +60,7 @@ class MyTask extends Component {
                 listIndex={this.props.listIndex}
                 taskIndex={index}
                 taskKey={task}
-                key={index}
+                key={task}
                 id={`option${index}`}
               />
             );
