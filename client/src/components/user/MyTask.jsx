@@ -40,10 +40,8 @@ class MyTask extends Component {
    * @memberOf MyTask
    */
   render() {
-    let myLocation = location.href.split('/');
-    myLocation[4] =
-      `sharelist?uid=${this.state.userId}&title=${this.props.listKey}`;
-    myLocation = myLocation.join('/');
+    const locationOrigin = location.origin;
+    const myLocation = `${locationOrigin}/app/sharelist?uid=${this.state.userId}&title=${this.props.listKey}`;
 
     return (
       <div>
