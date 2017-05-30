@@ -1,4 +1,5 @@
 import express from 'express';
+import nodemailer from 'nodemailer';
 import firebase from 'firebase';
 import { dateFrom } from '../util/helper';
 import cronJob from '../util/cronjob';
@@ -331,6 +332,66 @@ todoRouter.get('/logout', (req, res) => {
           message: 'Logout Failed'
         });
    });
+});
+
+/**
+ * Sends email to a user
+ * POST /sendmail
+ * @returns {string} message
+ */
+todoRouter.post('/sendmail', (req, res) => {
+  const email = req.body.email;
+  const myLocation = req.body.myLocation;
+
+  if (email && myLocation) {
+    // create reusable transporter object using the default SMTP transport
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL,
+        pass: process.env.GMAIL_PASS
+      }
+    });
+
+    // setup email data with unicode symbols
+    const mailOptions = {
+      from: '"Worklist 👻" <no-reply@worklist.com>', // sender address
+      to: email, // list of receivers
+      subject: 'Collaborate on TODO list', // Subject line
+      html: `<p><b>Hello Friend, </b><br />
+        You have been invited to contribute to a todo list, click the link below: <br />
+          <i><u>${myLocation}</u></p>` // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(400)
+          .send({
+            message: 'Unsuccessful! Email was not sent'
+          });
+      }
+      console.log('Message %s sent: %s', info.messageId, info.response);
+      return res.status(200)
+        .send({
+          message: 'Email has been sent'
+        });
+    });
+  } else {
+    if (!email) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid email'
+        });
+    }
+    if (!myLocation) {
+      return res.status(400)
+        .send({
+          message: 'Enter a valid myLocation'
+        });
+    }
+  }
 });
 
 export default todoRouter;
