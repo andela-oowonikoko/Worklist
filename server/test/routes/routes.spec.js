@@ -125,7 +125,7 @@ describe('TODO lIST API', () => {
       superRequest.post('/resetPassword')
       .send(helper.noPasswordCredential)
       .end((err, res) => {
-        expect(res.status).to.equal(400);
+        expect(res.status).to.equal(404);
         expect(res.body.message)
           .to.equal('This email is not registered, please sign up');
         done();
