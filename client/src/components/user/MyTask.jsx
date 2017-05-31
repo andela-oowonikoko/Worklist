@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Modal } from 'react-materialize';
 import MyTaskContent from './MyTaskContent';
-import deleteListActions from '../../actions/deleteListActions';
+import deleteListActions from '../../actions/DeleteListActions';
+import SendMailActions from '../../actions/SendMailActions';
 
 /**
  * @class MyTask
@@ -16,9 +18,35 @@ class MyTask extends Component {
     super(props);
     this.state = {
       title: this.props.listKey,
-      userId: localStorage.getItem('userId'),
+      userId: JSON.parse(localStorage.getItem('worklist')).uid,
+      email: ''
     };
     this.onDeleteList = this.onDeleteList.bind(this);
+  }
+
+  /**
+   * @param {any} event
+   * @returns {object} object
+   * @memberOf MyTask
+   */
+  onChangeEvent(event) {
+    return this.setState({ [event.target.name]: event.target.value });
+  }
+
+  /**
+   * @param {any} event
+   * @returns {void}
+   * @memberOf MyTask
+   */
+  onSubmit(event) {
+    event.preventDefault();
+    const locationOrigin = location.origin;
+    const myLocation = `${locationOrigin}/app/sharelist?uid=${this.state.userId}&title=${this.props.listKey}`;
+    const bodyData = {
+      email: this.state.email,
+      myLocation
+    };
+    SendMailActions.sendMail(bodyData);
   }
 
   /**
@@ -40,10 +68,8 @@ class MyTask extends Component {
    * @memberOf MyTask
    */
   render() {
-    let myLocation = location.href.split('/');
-    myLocation[4] =
-      `sharelist?uid=${this.state.userId}&title=${this.props.listKey}`;
-    myLocation = myLocation.join('/');
+    const locationOrigin = location.origin;
+    const myLocation = `${locationOrigin}/app/sharelist?uid=${this.state.userId}&title=${this.props.listKey}`;
 
     return (
       <div>
@@ -60,12 +86,40 @@ class MyTask extends Component {
                 listIndex={this.props.listIndex}
                 taskIndex={index}
                 taskKey={task}
-                key={index}
+                key={task}
                 id={`option${index}`}
               />
             );
           })}
-        <a href={myLocation} >Share</a>
+        <Modal
+          header="Share List"
+          trigger={
+            <a href={myLocation} >Share</a>}
+        >
+          <form
+            className="col s12"
+            method="post"
+            onSubmit={event => this.onSubmit(event)}
+          >
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="todoInput"
+              onChange={event => this.onChangeEvent(event)}
+              value={this.state.email}
+              required
+            />
+            <button
+              className="btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            >
+              Send
+              <i className="material-icons right">send</i>
+            </button>
+          </form>
+        </Modal>
         <i
           className="material-icons right deleteIcon"
           onClick={this.onDeleteList}

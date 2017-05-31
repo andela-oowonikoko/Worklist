@@ -1,7 +1,8 @@
-const Dispatcher = require('../dispatcher/appDispatcher');
-const ActionTypes = require('../constants/actionTypes');
-const EventEmitter = require('events').EventEmitter;
+import Events from 'events';
+import Dispatcher from '../dispatcher/appDispatcher';
+import ActionTypes from '../constants/actionTypes';
 
+const EventEmitter = Events.EventEmitter;
 const CHANGE_EVENT = 'change';
 let _errorMessage = {};
 
@@ -30,4 +31,4 @@ Dispatcher.register((action) => {
   }
 });
 
-module.exports = ErrorStore;
+export default ErrorStore;

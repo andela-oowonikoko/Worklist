@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../firebaseConfig';
 import NavBar from '../common/NavBar';
-import AuthenticationActions from '../../actions/authenticationActions';
+import AuthenticationActions from '../../actions/AuthenticationActions';
 
 /**
  * @class Profile
@@ -72,11 +72,11 @@ class Profile extends Component {
    */
   uploadPicture() {
     const reader = new FileReader();
-    const userId = localStorage.getItem('userId');
+    const userId = JSON.parse(localStorage.getItem('worklist')).uid;
     const fileExtension = this.state.fileExtension;
 
     if (this.state.fileUploaded !== '') {
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         const storageRef = firebase.storage().ref('/images');
         const imageRef = storageRef.child(`${userId}.${fileExtension}`);
         imageRef.putString(event.target.result, 'data_url')

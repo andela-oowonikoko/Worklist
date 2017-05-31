@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UpdateListActions from '../../actions/updateListActions';
+import UpdateListActions from '../../actions/UpdateListActions';
 
 /**
  * @class MyTaskContent
@@ -14,7 +14,7 @@ class MyTaskContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: localStorage.getItem('userId'),
+      userId: JSON.parse(localStorage.getItem('worklist')).uid,
       title: this.props.listKey,
       taskKey: this.props.taskKey
     };

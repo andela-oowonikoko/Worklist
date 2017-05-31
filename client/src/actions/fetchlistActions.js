@@ -1,19 +1,17 @@
+import axios from 'axios';
 import Dispatcher from '../dispatcher/appDispatcher';
 import ActionTypes from '../constants/actionTypes';
 
 const FetchlistActions = {
   fetchlist(userId) {
-    fetch(`/users/?q=${userId}`)
-      .then(res => res.json())
-      .then(data => {
+    axios.get(`/users/?q=${userId}`)
+      .then((res) => {
         Dispatcher.dispatch({
           actionType: ActionTypes.FETCH_LISTS,
-          data: data.data
+          data: res.data.data
         });
       });
   }
 };
 
 module.exports = FetchlistActions;
-
-// fetch('url', {method: 'POST', body: data})

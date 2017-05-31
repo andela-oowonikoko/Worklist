@@ -2,12 +2,12 @@ import axios from 'axios';
 import Dispatcher from '../dispatcher/appDispatcher';
 import ActionTypes from '../constants/actionTypes';
 
-const AddListActions = {
-  addlist(bodyData) {
-    axios.post('/createtask', bodyData)
+const SendMailActions = {
+  sendMail(bodyData) {
+    axios.post('/sendmail', bodyData)
       .then((res) => {
         Dispatcher.dispatch({
-          actionType: ActionTypes.ADD_LIST,
+          actionType: ActionTypes.SET_SUCCESS_MESSAGE,
           data: res.data.message
         });
       })
@@ -20,4 +20,4 @@ const AddListActions = {
   }
 };
 
-module.exports = AddListActions;
+module.exports = SendMailActions;

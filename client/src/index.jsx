@@ -5,8 +5,8 @@ import App from './components/common/App';
 require('../dist/scss/style.scss');
 const FetchlistActions = require('./actions/fetchlistActions');
 
-if (localStorage.getItem('userId')) {
-  const userId = localStorage.getItem('userId');
+if (localStorage.getItem('worklist')) {
+  const userId = JSON.parse(localStorage.getItem('worklist')).uid;
 
   FetchlistActions.fetchlist(userId);
 }

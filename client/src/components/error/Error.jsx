@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ErrorStore from '../../stores/errorStore';
+import ErrorStore from '../../stores/ErrorStore';
 
 /**
  * @class Error

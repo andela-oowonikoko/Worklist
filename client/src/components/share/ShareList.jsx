@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Button, Row, Input } from 'react-materialize';
 import NavBar from '../common/NavBar';
-import AddListActions from '../../actions/addListActions';
-import ShareListActions from '../../actions/shareListActions';
-import ShareListStore from '../../stores/sharelistStore';
+import AddListActions from '../../actions/AddListActions';
+import ShareListActions from '../../actions/ShareListActions';
+import ShareListStore from '../../stores/ShareListStore';
 
 /**
  * @class ShareList
